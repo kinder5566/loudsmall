@@ -5,7 +5,8 @@ import { history } from '~/src/client/constants/singleton';
 class AuthComponent extends React.Component {
   static propTypes = {
     isAuth: PropTypes.bool.isRequired,
-    component: PropTypes.func.isRequired
+    component: PropTypes.func.isRequired,
+    handleCookie: PropTypes.func.isRequired
   };
   constructor(props) {
     super(props);
@@ -17,9 +18,15 @@ class AuthComponent extends React.Component {
     this.checkAuth();
   };
   checkAuth() {
+    var self = this;
     if (!this.props.isAuth) {
-      let redirectAfterLogin = this.props.location.pathname;
-      history.push(`/?next=${redirectAfterLogin}`);
+      this.props.handleCookie(function(err, data) {
+        if (err) {
+          history.push('/');
+          // let redirectAfterLogin = self.props.location.pathname;
+          // history.push(`/?next=${redirectAfterLogin}`);
+        }
+      });
     }
   };
 

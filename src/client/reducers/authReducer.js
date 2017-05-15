@@ -12,6 +12,21 @@ const authState = Immutable.fromJS({
 
 export default function authReducers(state = authState, action) {
   switch (action.type) {
+  case AUTH.COOKIE: {
+    return state;
+  }
+  case AUTH.COOKIE_SUCCESS: {
+    console.log(action.payload);
+    return state.merge({'user': {
+      'u_name': action.payload.u_name,
+      'token': action.payload.token,
+      'type': action.payload.type
+    }});
+  }
+  case AUTH.COOKIE_FAIL: {
+    return state;
+  }
+
   case AUTH.SIGNIN: {
     return state.set({'signingIn': true});
   }
@@ -26,6 +41,7 @@ export default function authReducers(state = authState, action) {
     alert(action.payload);
     return state.set({'signingIn': false});
   }
+
   case AUTH.SIGNOUT: {
     return state;
   }

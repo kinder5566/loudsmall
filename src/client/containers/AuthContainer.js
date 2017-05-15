@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import * as authActions from '~/src/client/actions/authActions';
 import AuthComponent from '~/src/client/components/auth/AuthComponent';
 
 export default (Component) => {
@@ -11,9 +12,12 @@ export default (Component) => {
   return connect(
     (state) => ({
       component: Component,
-      user: state.getIn(['authReducer', 'user']),
-      isAuth: state.getIn(['authReducer', 'user']) ? true : false
+      isAuth: state.getIn(['authReducer', 'user', 'token']) ? true : false
     }),
-    (dispatch) => ({ })
+    (dispatch) => ({
+      handleCookie: (cb) => {
+        dispatch(authActions.checkCookie(cb));
+      },
+    })
   )(AuthComponent);
 }

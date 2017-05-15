@@ -1,7 +1,29 @@
 import { createAction } from 'redux-actions';
-import { MSG } from '~/src/client/constants/actionTypes';
+import { SOCKET, MSG } from '~/src/client/constants/actionTypes';
 import { socket } from '~/src/client/constants/singleton';
 import uuid from 'uuid';
+
+const disconnect = createAction(SOCKET.DISCONNECTED);
+const connecting = createAction(SOCKET.CONNECTING);
+const connected = createAction(SOCKET.CONNECTED);
+export function connectToServer() {
+  return (dispatch, getState) => {
+    dispatch(connecting());
+    let user = getState().getIn(['authReducer', 'user']).toJS();
+    socket.connect(dispatch, function(err, client) {
+      if(err) {
+        dispatch(disconnect(err));
+        return;
+      }
+      let data = {
+        u_name: user.u_name,
+        token: user.token
+      };
+      client.emit('auth', data);
+      dispatch(connected());
+    });
+  };
+}
 
 const sendMsgAction = createAction(MSG.SEND_MSG);
 const addMsgAction = createAction(MSG.ADD_MSG);

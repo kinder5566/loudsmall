@@ -1,19 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Panel from 'react-bootstrap/lib/Panel';
 import ChatView from './ChatView';
 import Input from './Input';
 
-const Chatroom = ({
-  msgs,
-  handleEnter,
-  handleMap
-}) => {
-  return (
-    <Panel bsStyle="warning" header="開嗆啦"
-      footer={<Input handleEnter={handleEnter} handleMap={handleMap} />}>
-      <ChatView msgs={msgs} />
-    </Panel>
-   );
-};
+class Chatroom extends React.Component {
+  static propTypes = {
+    msgs: PropTypes.object.isRequired,
+    handleSocket: PropTypes.func.isRequired,
+    handleEnter: PropTypes.func.isRequired,
+    handleMap: PropTypes.func.isRequired
+  };
 
-export default Chatroom;
+  constructor(props) {
+    super(props);
+  };
+
+  componentDidMount(){
+    this.props.handleSocket();
+  };
+
+  render() {
+    return (
+      <Panel bsStyle="warning" header="開嗆啦"
+        footer={<Input handleEnter={this.props.handleEnter} 
+                       handleMap={this.props.handleMap} />}>
+        <ChatView msgs={this.props.msgs} />
+      </Panel>
+     );
+  };
+}
+
+export default Chatroom

@@ -7,6 +7,9 @@ export default connect(
     msgs: state.getIn(['msgReducer', 'msgs'])
   }),
   (dispatch) => ({
+    handleSocket: () => {
+      dispatch(msgActions.connectToServer());
+    },
     handleEnter: (data) => {
       dispatch(msgActions.sendTextMsg(data));
     },

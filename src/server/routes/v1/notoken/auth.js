@@ -9,11 +9,26 @@ var users = [];
 
 module.exports = function (router) {
 
+  router.post('/auth_token', function(req, res) {
+    let token = req.body.token;
+    let respJSON = new util.jsonRet();
+    try {
+      var decoded = jwt.verify(token, util.secretKey);
+      respJSON.data.u_name = decoded.u_name;
+      respJSON.data.token = token;
+      respJSON.data.type = decoded.type;
+      res.json(respJSON);
+    } catch (err) {
+      respJSON.code = 101; //token error
+      res.json(respJSON);
+    }
+  });
+
   router.post('/sign_in', function(req, res) {
     let u_name = req.body.u_name;
     let respJSON = new util.jsonRet();
     if(u_name) {
-      let token = jwt.sign({ u_name }, util.secretKey);
+      let token = jwt.sign({u_name: u_name, type: 'local'}, util.secretKey);
       respJSON.data.token = token;
       respJSON.data.u_name = u_name;
       respJSON.data.type = 'local';
@@ -35,7 +50,7 @@ module.exports = function (router) {
         let payload = login.getPayload();
         if(email === payload['email']) {
           let u_name = payload['name'];
-          let token = jwt.sign({ u_name }, util.secretKey);
+          let token = jwt.sign({u_name: u_name, type: 'google'}, util.secretKey);
           respJSON.data.token = token;
           respJSON.data.u_name = u_name;
           respJSON.data.type = 'google';

@@ -1,8 +1,40 @@
 import { createAction } from 'redux-actions';
+import Cookies from 'universal-cookie';
 import axios from "axios";
-import { AUTH, SOCKET } from '~/src/client/constants/actionTypes';
+
+import { AUTH } from '~/src/client/constants/actionTypes';
 import { API_PATH } from '~/util/config';
-import { history, socket } from '~/src/client/constants/singleton';
+import { history } from '~/src/client/constants/singleton';
+
+const cookies = new Cookies();
+
+const cookieReq = createAction(AUTH.COOKIE);
+const cookieSuccess = createAction(AUTH.COOKIE_SUCCESS);
+const cookieFail = createAction(AUTH.COOKIE_FAIL);
+export function checkCookie(cb) {
+  return dispatch => {
+    dispatch(cookieReq());
+    const token = cookies.get('loudsmallToken');
+    var data = {
+      token: token
+    };
+    axios.post(API_PATH + "api/v1/auth_token/", data)
+    .then((res) => {
+      if(res.data.code === 0) {
+        dispatch(cookieSuccess(res.data.data));
+        cb(null, res.data.data);
+      }
+      else {
+        dispatch(cookieFail(res.data.code));
+        cb('no cookie', null);
+      }
+    })
+    .catch((err) => {
+      dispatch(cookieFail(err));
+      cb('cookie error', null);
+    });
+  };
+}
 
 const signInReq = createAction(AUTH.SIGNIN);
 const signInSuccess = createAction(AUTH.SIGNIN_SUCCESS);
@@ -17,8 +49,8 @@ export function signIn(user) {
     .then((res) => {
       if(res.data.code === 0) {
         dispatch(signInSuccess(res.data.data));
+        cookies.set('loudsmallToken', res.data.data.token);
         history.push('/loud');
-        dispatch(connectToServer(res.data.data));
       }
       else {
         dispatch(signInFail(res.data.code));
@@ -41,8 +73,8 @@ export function signInGoogle(googleUser) {
     .then((res) => {
       if(res.data.code === 0) {
         dispatch(signInSuccess(res.data.data));
+        cookies.set('loudsmallToken', res.data.data.token);
         history.push('/loud');
-        dispatch(connectToServer(res.data.data));
       }
       else {
         dispatch(signInFail(res.data.code));
@@ -67,6 +99,7 @@ export function signOut(user) {
     axios.post(API_PATH + "api/v1/sign_out/", data)
     .then((res) => {
       if(res.data.code === 0) {
+        cookies.remove('loudsmallToken');
         if(user.type === 'google') {
           window.gapi.auth2.getAuthInstance().signOut()
           .then(() => {
@@ -85,27 +118,6 @@ export function signOut(user) {
     })
     .catch((err) => {
       dispatch(signInFail(err));
-    });
-  };
-}
-
-const disconnect = createAction(SOCKET.DISCONNECTED);
-const connecting = createAction(SOCKET.CONNECTING);
-const connected = createAction(SOCKET.CONNECTED);
-function connectToServer(user) {
-  return dispatch => {
-    dispatch(connecting());
-    socket.connect(dispatch, function(err, client) {
-      if(err) {
-        dispatch(disconnect(err));
-        return;
-      }
-      let data = {
-        u_name: user.u_name,
-        token: user.token
-      };
-      client.emit('auth', data);
-      dispatch(connected());
     });
   };
 }

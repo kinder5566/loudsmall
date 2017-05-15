@@ -24,7 +24,6 @@ class SignInGoogle extends React.Component {
         'onsuccess': this.handleSubmit
       }); 
     }
-
   };
 
   handleSubmit(googleUser) {
