@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: `${__dirname}/src/dist`,
     filename: 'index_bundle.js',
-    publicPath: '/'
+    publicPath: '/static/'
   },
   module: {
     loaders: [

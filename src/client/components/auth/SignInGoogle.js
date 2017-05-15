@@ -11,13 +11,20 @@ class SignInGoogle extends React.Component {
   };
 
   componentDidMount(){
-    window.gapi.signin2.render('g-signin2', {
-      'width': 215,
-      'height': 46,
-      'longtitle': true,
-      'theme': 'dark',
-      'onsuccess': this.handleSubmit
-    }); 
+    const googleSign = document.createElement("script");
+    googleSign.src = "https://apis.google.com/js/platform.js";
+    googleSign.async = true;
+    document.body.appendChild(googleSign);
+    googleSign.onload = function() {
+      window.gapi.signin2.render('g-signin2', {
+        'width': 215,
+        'height': 46,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': this.handleSubmit
+      }); 
+    }
+
   };
 
   handleSubmit(googleUser) {
