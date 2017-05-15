@@ -1,0 +1,26 @@
+.chatDiv {
+  margin-bottom: 20px;
+}
+.chatDiv .chatBlock {
+  width: 45%;
+}
+.self {
+  float: left;
+}
+.others {
+  float: right;
+}
+.self .well {
+  background-color: #a6f9ac;
+  border: 1px solid #46d263;
+  margin-bottom: 0px;
+}
+.others .well {
+  margin-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+  .chatDiv .chatBlock {
+    width: 60%;
+  }
+}
