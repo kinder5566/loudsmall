@@ -1,17 +1,11 @@
-import {
-  sendMsg,
-  addMsg,
-  receiveMsg
-} from '~/src/client/actions/msgActions';
-
 import createHistory from 'history/createBrowserHistory';
 export const history = createHistory();
 
 import io from 'socket.io-client';
-
+import { receiveMsg } from '~/src/client/actions/msgActions';
 export const socket = function() {
-  var connection = null;
-  var connect = function(dispatch, callback) {
+  let connection = null;
+  let connect = function(dispatch, callback) {
     if(!connection) {
       connection = io();
       connection.on('text_msg', function(data){
@@ -20,11 +14,16 @@ export const socket = function() {
     }
     callback(null, connection);
   }
-  var client = function() {
+  let client = function() {
     return connection;
+  }
+  let disconnect = function() {
+    connection.disconnect();
+    connection = null;
   }
   return {
     connect: connect,
+    disconnect: disconnect,
     client: client
   };
 }();

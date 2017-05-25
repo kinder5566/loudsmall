@@ -8,13 +8,13 @@ export default connect(
   }),
   (dispatch) => ({
     handleSocket: () => {
-      dispatch(msgActions.connectToServer());
+      return dispatch(msgActions.connectToServer());
     },
     handleEnter: (data) => {
-      dispatch(msgActions.sendTextMsg(data));
+      return dispatch(msgActions.sendTextMsg(data));
     },
     handleMap: (pos) => {
-      dispatch(msgActions.sendMapMsg(pos));
+      return dispatch(msgActions.sendMapMsg(pos));
     }
   })
 )(Chatroom);

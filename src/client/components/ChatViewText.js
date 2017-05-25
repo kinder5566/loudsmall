@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Well from 'react-bootstrap/lib/Well';
+import { Well } from 'react-bootstrap';
 
-import '~/util/util'; // for override Date
+import '~/src/util/util'; // for override Date
 import '~/src/client/styles/style.css';
 
 const ChatViewText = ({ content }) => {

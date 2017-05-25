@@ -5,7 +5,7 @@ var auth = new GoogleAuth;
 var client = new auth.OAuth2(CLIENT_ID, '', '');
 var util = require(__server + '/util/util');
 
-var users = [];
+var users = []; // from db
 
 module.exports = function (router) {
 

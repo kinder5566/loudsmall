@@ -1,6 +1,6 @@
 require('babel-core/register'); //enables ES6 ('import'.. etc) in Node
 var path = require('path');
-global.__base = path.join(__dirname, '..', '..');
+global.__base = path.join(__dirname, '..');
 global.__server = __dirname;
 var express = require('express');
 var favicon = require('serve-favicon');
@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // Webpack
 var webpack = require('webpack');
-var config = require(path.join(__base, 'webpack.config.dev'));
+var config = require(path.join(__base, '..', 'webpack.config.dev'));
 var compiler = webpack(config);
 compiler.apply(new webpack.ProgressPlugin());
 
@@ -33,7 +33,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__base, 'src', 'client', 'index.html'));
+  res.sendFile(path.join(__base, 'client', 'index.html'));
 });
 
 // RESTful API

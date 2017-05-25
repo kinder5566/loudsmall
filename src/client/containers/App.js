@@ -5,7 +5,8 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
-import config from '~/util/config';
+import { history } from '~/src/client/constants/singleton';
+import config from '~/src/util/config';
 
 class App extends React.Component {
   componentWillMount() {
@@ -16,7 +17,9 @@ class App extends React.Component {
   };
 
   handleSignOut() {
-    this.props.handleSignOut(this.props.user);
+    this.props.handleSignOut(this.props.user)
+    .then(() => { history.push('/') })
+    .catch((err) => { console.log(err) });
   };
   render(user) {
     return (
@@ -43,18 +46,20 @@ class App extends React.Component {
 
 import { withRouter } from 'react-router-dom'
 import * as authActions from '~/src/client/actions/authActions';
+import * as msgActions from '~/src/client/actions/msgActions';
 export default withRouter(connect(
   (state) => ({
     user: state.getIn(['authReducer', 'user'])
   }),
   (dispatch) => ({
     handleSignOut: (user) => {
-      var data = {
+      let data = {
         u_name: user.get('u_name'),
         token: user.get('token'),
         type: user.get('type')
       }
-      dispatch(authActions.signOut(data));
+      dispatch(msgActions.disconnectFromServer());
+      return dispatch(authActions.signOut(data));
     }
   })
 )(App));

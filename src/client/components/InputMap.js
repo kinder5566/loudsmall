@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 class InputMap extends React.Component {
@@ -67,17 +66,18 @@ class InputMap extends React.Component {
   }
 
   getPosition(cb) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          cb(null, pos);
-        }, function(err) { cb(err, null); }
-      );
+    if (!navigator.geolocation) {
+      cb('Not support geolocation', null);
+      return;
     }
-    else { cb('Not support geolocation', null); }
+    navigator.geolocation.getCurrentPosition(function(position) {
+        let pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        cb(null, pos);
+      }, function(err) { cb(err, null); }
+    );
   };
 
   shareLocation() {

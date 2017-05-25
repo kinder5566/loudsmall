@@ -11,6 +11,7 @@ class SignInGoogle extends React.Component {
   };
 
   componentDidMount(){
+    var self = this;
     const googleSign = document.createElement("script");
     googleSign.src = "https://apis.google.com/js/platform.js";
     googleSign.async = true;
@@ -21,7 +22,7 @@ class SignInGoogle extends React.Component {
         'height': 46,
         'longtitle': true,
         'theme': 'dark',
-        'onsuccess': this.handleSubmit
+        'onsuccess': self.handleSubmit
       }); 
     }
   };
@@ -34,5 +35,3 @@ class SignInGoogle extends React.Component {
   };
 }
 export default SignInGoogle
-
-          

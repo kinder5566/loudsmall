@@ -20,12 +20,10 @@ class AuthComponent extends React.Component {
   checkAuth() {
     var self = this;
     if (!this.props.isAuth) {
-      this.props.handleCookie(function(err, data) {
-        if (err) {
-          history.push('/');
-          // let redirectAfterLogin = self.props.location.pathname;
-          // history.push(`/?next=${redirectAfterLogin}`);
-        }
+      this.props.handleCookie()
+      .then()
+      .catch(err => {
+        history.push('/');
       });
     }
   };

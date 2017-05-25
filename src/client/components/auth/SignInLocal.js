@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
-import Form from 'react-bootstrap/lib/Form';
-import FormControl from 'react-bootstrap/lib/FormControl';
+import { Button, InputGroup, Form, FormControl } from 'react-bootstrap';
 
 class SignInLocal extends React.Component {
   static propTypes = {

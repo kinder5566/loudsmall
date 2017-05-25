@@ -10,17 +10,31 @@ export function connectToServer() {
   return (dispatch, getState) => {
     dispatch(connecting());
     let user = getState().getIn(['authReducer', 'user']).toJS();
-    socket.connect(dispatch, function(err, client) {
-      if(err) {
-        dispatch(disconnect(err));
-        return;
-      }
-      let data = {
-        u_name: user.u_name,
-        token: user.token
-      };
-      client.emit('auth', data);
-      dispatch(connected());
+    return new Promise(function(fulfill, reject) {
+      socket.connect(dispatch, function(err, client) {
+        if(err) {
+          dispatch(disconnect(err));
+          reject(err);
+          return;
+        }
+        let data = {
+          u_name: user.u_name,
+          token: user.token
+        };
+        client.emit('auth', data);
+        dispatch(connected());
+        fulfill();
+      });
+    });
+  };
+}
+
+export function disconnectFromServer() {
+  return (dispatch) => {
+    return new Promise(function(fulfill, reject) {
+      socket.disconnect();
+      dispatch(disconnect());
+      fulfill();
     });
   };
 }
@@ -28,7 +42,6 @@ export function connectToServer() {
 const sendMsgAction = createAction(MSG.SEND_MSG);
 const addMsgAction = createAction(MSG.ADD_MSG);
 const receiveMsgAction = createAction(MSG.RECEIVE_MSG);
-
 export function sendTextMsg(msg) {
   return (dispatch, getState) => {
     dispatch(sendMsgAction());
@@ -38,9 +51,12 @@ export function sendTextMsg(msg) {
       msg: msg,
       type: 'text'
     };
-    socket.client().emit('text_msg', data);
-    data.u_name = user.u_name;
-    dispatch(addMsgAction(data));
+    return new Promise(function(fulfill, reject) {
+      socket.client().emit('text_msg', data);
+      data.u_name = user.u_name;
+      dispatch(addMsgAction(data));
+      fulfill(data);
+    });
   };
 }
 
@@ -53,9 +69,12 @@ export function sendMapMsg(pos) {
       msg: pos,
       type: 'map'
     };
-    socket.client().emit('text_msg', data);
-    data.u_name = user.u_name;
-    dispatch(addMsgAction(data));
+    return new Promise(function(fulfill, reject) {
+      socket.client().emit('text_msg', data);
+      data.u_name = user.u_name;
+      dispatch(addMsgAction(data));
+      fulfill(data);
+    });
   };
 }
 
@@ -65,6 +84,9 @@ export function receiveMsg(msg) {
     if(user.u_name === msg.u_name) {
       msg.self = true;
     }
-    dispatch(receiveMsgAction(msg));
+    return new Promise(function(fulfill, reject) {
+      dispatch(receiveMsgAction(msg));
+      fulfill(msg);
+    });
   };
 }

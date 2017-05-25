@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-bootstrap/lib/Modal';
+import { Modal } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
-import config from '~/util/config';
-import '~/util/util'; // for override Date
+import config from '~/src/util/config';
+import '~/src/util/util'; // for override Date
 import '~/src/client/styles/style.css';
 
 const img = {

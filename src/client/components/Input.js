@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
-import Button from 'react-bootstrap/lib/Button';
+import { Button, InputGroup ,FormControl, Glyphicon } from 'react-bootstrap';
 
 import { socket } from '~/src/client/constants/singleton';
 import InputMap from './InputMap';
@@ -51,14 +48,14 @@ class Input extends React.Component {
       if (e.which !== 13) return;
     e.preventDefault();
     if(this.state.msg && this.state.msg !== '') {
-      this.props.handleEnter(this.state.msg);
-      this.setState({msg: ''});
+      this.props.handleEnter(this.state.msg)
+      .then(() => { this.setState({msg: ''}); });
     }
   };
 
   handleMap(pos) {
-    this.setState({inputMethod: 1});
-    this.props.handleMap(pos);
+    this.props.handleMap(pos)
+    .then(() => { this.setState({inputMethod: 1}); });
   };
 
   render() {

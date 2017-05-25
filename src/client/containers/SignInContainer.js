@@ -9,10 +9,10 @@ export default connect(
       var userObj = {
         u_name: data
       };
-      dispatch(authActions.signIn(userObj));
+      return dispatch(authActions.signIn(userObj));
     },
     handleSubmitGoogle: (googleUser) => {
-      dispatch(authActions.signInGoogle(googleUser));
+      return dispatch(authActions.signInGoogle(googleUser));
     }
   })
 )(SignIn);

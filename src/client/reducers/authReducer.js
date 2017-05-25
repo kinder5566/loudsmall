@@ -16,7 +16,6 @@ export default function authReducers(state = authState, action) {
     return state;
   }
   case AUTH.COOKIE_SUCCESS: {
-    console.log(action.payload);
     return state.merge({'user': {
       'u_name': action.payload.u_name,
       'token': action.payload.token,

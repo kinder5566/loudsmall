@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import ChatViewText from '~/src/client/components/ChatViewText';
 import ChatViewMap from '~/src/client/components/ChatViewMap';
 
