@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 import { history } from '~/src/client/constants/singleton';
 import config from '~/src/util/config';
@@ -21,6 +19,7 @@ class App extends React.Component {
     .then(() => { history.push('/') })
     .catch((err) => { console.log(err) });
   };
+
   render(user) {
     return (
     <div>

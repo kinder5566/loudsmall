@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import { Modal, Glyphicon } from 'react-bootstrap';
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 import config from '~/src/util/config';
@@ -51,7 +51,8 @@ class ChatViewMap extends React.Component {
             </div>
             <div className="row">
               {new Date(this.props.content.time).toDateString()}
-              {this.props.content.self ? (this.props.content.send ? ' - 送到':' - 傳送中') : ''}
+              {this.props.content.self ? (this.props.content.send ? 
+                ' - ' + <Glyphicon glyph="ok" />: ' - ' + <Glyphicon glyph="option-horizontal" />) : ''}
             </div>
           </div>
         </div>

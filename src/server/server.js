@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var app = express();
 app.set('port', process.env.PORT || 8008);
 
-// app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
+app.use(favicon(path.join(__base, 'client', 'images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,6 +32,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 app.use(require('webpack-hot-middleware')(compiler));
+
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__base, 'client', 'index.html'));
 });

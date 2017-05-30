@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Well } from 'react-bootstrap';
+import { Well, Glyphicon } from 'react-bootstrap';
 
 import '~/src/util/util'; // for override Date
 import '~/src/client/styles/style.css';
@@ -19,7 +19,8 @@ const ChatViewText = ({ content }) => {
         </div>
         <div className="row">
           {new Date(content.time).toDateString()}
-          {content.self ? (content.send ? ' - 送到':' - 傳送中') : ''}
+          {content.self ? (content.send ? 
+            <Glyphicon glyph="ok" /> : <Glyphicon glyph="option-horizontal" />) : ''}
         </div>
       </div>
     </div>

@@ -63,7 +63,9 @@ class Input extends React.Component {
       <div>
         <InputGroup>
           <InputGroup.Button>
-            <Button onClick={() => {this.inputMethodChange(2)}}><Glyphicon style={icon} glyph="map-marker" /></Button>
+            <Button onClick={() => {this.inputMethodChange(2)}}>
+              <Glyphicon style={icon} glyph="map-marker" />
+            </Button>
           </InputGroup.Button>
           <FormControl type="text" value={this.state.msg} onChange={::this.textChange}  
             onKeyDown={::this.handleEnter} placeholder="請說話好嗎..." />
